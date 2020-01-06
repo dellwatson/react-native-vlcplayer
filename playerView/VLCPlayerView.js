@@ -28,7 +28,7 @@ export default class VLCPlayerView extends Component {
     uri: PropTypes.string,
   };
 
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.state = {
       paused: true,
@@ -58,7 +58,7 @@ export default class VLCPlayerView extends Component {
   };
 
   componentDidMount() {
-    if (this.props.isFull) {
+    if(this.props.isFull) {
       this.setState({
         showControls: true,
       });
@@ -68,7 +68,7 @@ export default class VLCPlayerView extends Component {
   componentWillUnmount() {
     this.vlcPlayer._onStopped()
 
-    if (this.bufferInterval) {
+    if(this.bufferInterval) {
       clearInterval(this.bufferInterval);
       this.bufferInterval = null;
     }
@@ -76,7 +76,7 @@ export default class VLCPlayerView extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (this.props.uri !== prevProps.uri) {
+    if(this.props.uri !== prevProps.uri) {
       console.log("componentDidUpdate");
       this.changeUrl = true;
     }
@@ -109,160 +109,160 @@ export default class VLCPlayerView extends Component {
     let showGG = false;
     let realShowLoding = false;
     let source = {};
-    if (uri) {
-      if (uri.split) {
+    if(uri) {
+      if(uri.split) {
         source = { uri: this.props.uri };
       } else {
         source = uri;
       }
     }
-    if (Platform.OS === 'ios') {
-      if ((loadingSuccess && isGG) || (isGG && type === 'swf')) {
+    if(Platform.OS === 'ios') {
+      if((loadingSuccess && isGG) || (isGG && type === 'swf')) {
         showGG = true;
       }
-      if (isLoading && type !== 'swf') {
+      if(isLoading && type !== 'swf') {
         realShowLoding = true;
       }
     } else {
-      if (loadingSuccess && isGG) {
+      if(loadingSuccess && isGG) {
         showGG = true;
       }
-      if (isLoading) {
+      if(isLoading) {
         realShowLoding = true;
       }
     }
 
     return (
       <TouchableOpacity
-        activeOpacity={1}
-        style={[styles.videoBtn, style]}
-        onPressOut={() => {
+        activeOpacity={ 1 }
+        style={ [styles.videoBtn, style] }
+        onPressOut={ () => {
           let currentTime = new Date().getTime();
-          if (this.touchTime === 0) {
+          if(this.touchTime === 0) {
             this.touchTime = currentTime;
             this.setState({ showControls: !this.state.showControls });
           } else {
-            if (currentTime - this.touchTime >= 500) {
+            if(currentTime - this.touchTime >= 500) {
               this.touchTime = currentTime;
               this.setState({ showControls: !this.state.showControls });
             }
           }
-        }}>
+        } }>
         <VLCPlayer
-          ref={ref => (this.vlcPlayer = ref)}
-          paused={this.state.paused}
+          ref={ ref => (this.vlcPlayer = ref) }
+          paused={ this.state.paused }
           //seek={this.state.seek}
-          style={[styles.video]}
-          source={source}
-          videoAspectRatio={videoAspectRatio}
-          onProgress={this.onProgress.bind(this)}
-          onEnd={this.onEnded.bind(this)}
+          style={ [styles.video] }
+          source={ source }
+          videoAspectRatio={ videoAspectRatio }
+          onProgress={ this.onProgress.bind(this) }
+          onEnd={ this.onEnded.bind(this) }
           //onEnded={this.onEnded.bind(this)}
-          onStopped={this.onEnded.bind(this)}
-          onPlaying={this.onPlaying.bind(this)}
-          onBuffering={this.onBuffering.bind(this)}
-          onPaused={this.onPaused.bind(this)}
-          progressUpdateInterval={250}
-          onError={this._onError}
-          onOpen={this._onOpen}
-          onLoadStart={this._onLoadStart}
+          onStopped={ this.onEnded.bind(this) }
+          onPlaying={ this.onPlaying.bind(this) }
+          onBuffering={ this.onBuffering.bind(this) }
+          onPaused={ this.onPaused.bind(this) }
+          progressUpdateInterval={ 250 }
+          onError={ this._onError }
+          onOpen={ this._onOpen }
+          onLoadStart={ this._onLoadStart }
         />
-        {realShowLoding &&
+        { realShowLoding &&
           !isError && (
-            <View style={styles.loading}>
-              <ActivityIndicator size={'large'} animating={true} color="#fff" />
+            <View style={ styles.loading }>
+              <ActivityIndicator size={ 'large' } animating={ true } color="#fff" />
             </View>
-          )}
-        {isError && (
-          <View style={[styles.loading, { backgroundColor: '#000' }]}>
-            <Text style={{ color: 'red' }}>{errorTitle}</Text>
+          ) }
+        { isError && (
+          <View style={ [styles.loading, { backgroundColor: '#000' }] }>
+            <Text style={ { color: 'red' } }>{ errorTitle }</Text>
             <TouchableOpacity
-              activeOpacity={1}
-              onPress={this._reload}
-              style={{
+              activeOpacity={ 1 }
+              onPress={ this._reload }
+              style={ {
                 width: 100,
                 alignItems: 'center',
                 justifyContent: 'center',
                 marginTop: 10,
-              }}>
-              <Icon name={'reload'} size={45} color="#fff" />
+              } }>
+              <Icon name={ 'reload' } size={ 45 } color="#fff" />
             </TouchableOpacity>
           </View>
-        )}
-        <View style={styles.topView}>
-          <View style={styles.backBtn}>
-            {showBack && (
+        ) }
+        <View style={ styles.topView }>
+          <View style={ styles.backBtn }>
+            { showBack && (
               <TouchableOpacity
-                onPress={() => {
-                  if (isFull) {
+                onPress={ () => {
+                  if(isFull) {
                     closeFullScreen && closeFullScreen();
                   } else {
                     onLeftPress && onLeftPress();
                   }
-                }}
-                style={styles.btn}
-                activeOpacity={0.8}>
-                <Icon name={'chevron-left'} size={30} color="#fff" />
+                } }
+                style={ styles.btn }
+                activeOpacity={ 0.8 }>
+                <Icon name={ 'chevron-left' } size={ 30 } color="#fff" />
               </TouchableOpacity>
-            )}
-            <View style={{ justifyContent: 'center', flex: 1, marginRight: 10 }}>
-              {showTitle &&
+            ) }
+            <View style={ { justifyContent: 'center', flex: 1, marginRight: 10 } }>
+              { showTitle &&
                 showControls && (
-                  <Text style={{ color: '#fff', fontSize: 16 }} numberOfLines={1}>
-                    {title}
+                  <Text style={ { color: '#fff', fontSize: 16 } } numberOfLines={ 1 }>
+                    { title }
                   </Text>
-                )}
+                ) }
             </View>
-            {showGG && (
-              <View style={styles.GG}>
+            { showGG && (
+              <View style={ styles.GG }>
                 <TimeLimt
-                  onEnd={() => {
+                  onEnd={ () => {
                     onEnd && onEnd();
-                  }}
+                  } }
                 //maxTime={Math.ceil(this.state.totalTime)}
                 />
               </View>
-            )}
+            ) }
           </View>
         </View>
-        <View style={[styles.bottomView]}>
-          {showControls && (
+        <View style={ [styles.bottomView] }>
+          { showControls && (
             <ControlBtn
               //style={isFull?{width:deviceHeight}:{}}
-              showSlider={!isGG}
-              showGG={showGG}
-              onEnd={onEnd}
-              title={title}
-              onLeftPress={onLeftPress}
-              paused={this.state.paused}
-              isFull={isFull}
-              currentTime={this.state.currentTime}
-              totalTime={this.state.totalTime}
-              onPausedPress={this._play}
-              onFullPress={this._toFullScreen}
-              onValueChange={value => {
+              showSlider={ !isGG }
+              showGG={ showGG }
+              onEnd={ onEnd }
+              title={ title }
+              onLeftPress={ onLeftPress }
+              paused={ this.state.paused }
+              isFull={ isFull }
+              currentTime={ this.state.currentTime }
+              totalTime={ this.state.totalTime }
+              onPausedPress={ this._play }
+              onFullPress={ this._toFullScreen }
+              onValueChange={ value => {
                 this.changingSlider = true;
                 this.setState({
                   currentTime: value,
                 });
-              }}
-              onSlidingComplete={value => {
+              } }
+              onSlidingComplete={ value => {
                 this.changingSlider = false;
-                if (Platform.OS === 'ios') {
+                if(Platform.OS === 'ios') {
                   this.vlcPlayer.seek(Number((value / this.state.totalTime).toFixed(17)));
                 } else {
                   this.vlcPlayer.seek(value);
                 }
-              }}
-              showGoLive={showGoLive}
-              onGoLivePress={onGoLivePress}
-              onReplayPress={onReplayPress}
-              titleGolive={titleGolive}
-              showLeftButton={showLeftButton}
-              showMiddleButton={showMiddleButton}
-              showRightButton={showRightButton}
+              } }
+              showGoLive={ showGoLive }
+              onGoLivePress={ onGoLivePress }
+              onReplayPress={ onReplayPress }
+              titleGolive={ titleGolive }
+              showLeftButton={ showLeftButton }
+              showMiddleButton={ showMiddleButton }
+              showRightButton={ showRightButton }
             />
-          )}
+          ) }
         </View>
       </TouchableOpacity>
     );
@@ -277,6 +277,7 @@ export default class VLCPlayerView extends Component {
     // if (this.state.paused) {
     //   this.setState({ paused: false });
     // }
+    this.setState({ isLoading: false })
     console.log('onPlaying');
   }
 
@@ -303,7 +304,7 @@ export default class VLCPlayerView extends Component {
       isError: false,
     });
     this.bufferTime = new Date().getTime();
-    if (!this.bufferInterval) {
+    if(!this.bufferInterval) {
       this.bufferInterval = setInterval(this.bufferIntervalFunction, 250);
     }
     console.log('onBuffering');
@@ -314,7 +315,7 @@ export default class VLCPlayerView extends Component {
     console.log('bufferIntervalFunction');
     let currentTime = new Date().getTime();
     let diffTime = currentTime - this.bufferTime;
-    if (diffTime > 1000) {
+    if(diffTime > 1000) {
       clearInterval(this.bufferInterval);
       this.setState({
         paused: true,
@@ -350,10 +351,10 @@ export default class VLCPlayerView extends Component {
     console.log('_onLoadStart');
     console.log(e);
     let { isError } = this.state;
-    if (isError) {
+    if(isError) {
       this.reloadSuccess = true;
       let { currentTime, totalTime } = this.state;
-      if (Platform.OS === 'ios') {
+      if(Platform.OS === 'ios') {
         this.vlcPlayer.seek(Number((currentTime / totalTime).toFixed(17)));
       } else {
         this.vlcPlayer.seek(currentTime);
@@ -384,7 +385,7 @@ export default class VLCPlayerView extends Component {
   };
 
   _reload = () => {
-    if (!this.reloadSuccess) {
+    if(!this.reloadSuccess) {
       this.vlcPlayer.resume && this.vlcPlayer.resume(false);
     }
   };
@@ -404,11 +405,11 @@ export default class VLCPlayerView extends Component {
      );*/
     let currentTime = event.currentTime;
     let loadingSuccess = false;
-    if (currentTime > 0 || this.state.currentTime > 0) {
+    if(currentTime > 0 || this.state.currentTime > 0) {
       loadingSuccess = true;
     }
-    if (!this.changingSlider) {
-      if (currentTime === 0 || currentTime === this.state.currentTime * 1000) {
+    if(!this.changingSlider) {
+      if(currentTime === 0 || currentTime === this.state.currentTime * 1000) {
       } else {
         this.setState({
           loadingSuccess: loadingSuccess,
@@ -435,16 +436,16 @@ export default class VLCPlayerView extends Component {
     let { onVLCEnded, onEnd, autoplay, isGG } = this.props;
     onVLCEnded && onVLCEnded();
     // [bavv add end]
-    if (((currentTime + 5) >= totalTime && totalTime > 0) || isGG) {
+    if(((currentTime + 5) >= totalTime && totalTime > 0) || isGG) {
       this.setState(
         {
           paused: true,
           //showControls: true,
         },
         () => {
-          if (!this.isEnding) {
+          if(!this.isEnding) {
             onEnd && onEnd();
-            if (!isGG) {
+            if(!isGG) {
               this.vlcPlayer.resume && this.vlcPlayer.resume(false);
               console.log(this.props.uri + ':   onEnded');
             } else {
@@ -475,7 +476,7 @@ export default class VLCPlayerView extends Component {
    */
   _toFullScreen = () => {
     let { startFullScreen, closeFullScreen, isFull } = this.props;
-    if (isFull) {
+    if(isFull) {
       closeFullScreen && closeFullScreen();
     } else {
       startFullScreen && startFullScreen();
